@@ -31,12 +31,10 @@ public class Main {
         }
 
 //        This is HashTable
-// 1) Initialize a 100‐bucket hash table
         MyHashTable<MyTest, Student> table = new MyHashTable<>(100);
 
         Random rnd = new Random();
 
-        // 2) Add 10 000 random entries
         for (int i = 0; i < 10_000; i++) {
             int id   = rnd.nextInt(1_000_000);
             String name = "Name" + rnd.nextInt(1_000_000);
@@ -45,7 +43,6 @@ public class Main {
             table.put(key, val);
         }
 
-        // 3) Count chain length in each bucket
         int[] counts = new int[table.getM()];
         for (int i = 0; i < table.getM(); i++) {
             MyHashTable<MyTest, Student>.HashNode<MyTest, Student> node = table.getChainArray()[i];
@@ -55,8 +52,7 @@ public class Main {
             }
         }
 
-        // 4) Print the bucket distribution
-        System.out.println("Bucket distribution (10 000 entries):");
+        System.out.println("bucket distribution (10 000 entries):");
         for (int i = 0; i < counts.length; i++) {
             System.out.printf("Bucket %2d: %4d elements%n", i, counts[i]);
         }
