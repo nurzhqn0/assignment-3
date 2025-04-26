@@ -2,10 +2,28 @@ public class MyHashTable<K, V> {
     public class HashNode<K, V> {
         private K key;
         private V value;
+        private HashNode<K, V> next;
+
 
         public HashNode(K key, V value) {
             this.key = key;
             this.value = value;
+        }
+
+        public HashNode<K, V> getNext() {
+            return next;
+        }
+
+        public K getKey() {
+            return key;
+        }
+
+        public V getValue() {
+            return value;
+        }
+
+        public void setNext(HashNode<K, V> next) {
+            this.next = next;
         }
 
         @Override
@@ -17,6 +35,30 @@ public class MyHashTable<K, V> {
     private HashNode<K, V>[] chainArray;
     private int M = 11;
     private int size;
+
+    public HashNode<K, V>[] getChainArray() {
+        return chainArray;
+    }
+
+    public void setChainArray(HashNode<K, V>[] chainArray) {
+        this.chainArray = chainArray;
+    }
+
+    public int getM() {
+        return M;
+    }
+
+    public void setM(int m) {
+        M = m;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
 
     public MyHashTable() {
         this(11);
@@ -36,17 +78,22 @@ public class MyHashTable<K, V> {
         return Math.abs(hashCode) % M;
     }
 
-    private void put(K key, V value){
+    public void put(K key, V value){
         if(key == null || value == null) {
             throw new IllegalArgumentException("Key or value cannot be null");
         }
 
         int hash = hash(key);
-        chainArray[hash] = new HashNode<>(key, value);
+        HashNode<K, V> newNode = new HashNode<>(key, value);
+
+        if (chainArray[hash] != null) {
+            newNode.setNext(chainArray[hash]);
+        }
+        chainArray[hash] = newNode;
         size++;
     }
 
-    private V get(K key){
+    public V get(K key){
         if(key == null) {
             throw new IllegalArgumentException("Key cannot be null");
         }
@@ -55,13 +102,13 @@ public class MyHashTable<K, V> {
         HashNode<K, V> node = chainArray[hash];
 
         if(node == null){
-           return null;
+            return null;
         }
 
         return node.value;
     }
 
-    private V remove(K key){
+    public V remove(K key){
         if(key == null) {
             throw new IllegalArgumentException("Key cannot be null");
         }

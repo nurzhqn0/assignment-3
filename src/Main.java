@@ -1,5 +1,8 @@
+import java.util.Random;
+
 public class Main {
     public static void main(String[] args) {
+//        This is Binary Search Tree
         BST<Integer, String> tree = new BST<>();
 
         tree.put(50, "root");
@@ -25,6 +28,37 @@ public class Main {
         System.out.println("\nafter deletion 30");
         for (var key : tree.iterator()) {
             System.out.println(key);
+        }
+
+//        This is HashTable
+// 1) Initialize a 100‐bucket hash table
+        MyHashTable<MyTest, Student> table = new MyHashTable<>(100);
+
+        Random rnd = new Random();
+
+        // 2) Add 10 000 random entries
+        for (int i = 0; i < 10_000; i++) {
+            int id   = rnd.nextInt(1_000_000);
+            String name = "Name" + rnd.nextInt(1_000_000);
+            MyTest key   = new MyTest(id, name);
+            Student val  = new Student("Student" + i);
+            table.put(key, val);
+        }
+
+        // 3) Count chain length in each bucket
+        int[] counts = new int[table.getM()];
+        for (int i = 0; i < table.getM(); i++) {
+            MyHashTable<MyTest, Student>.HashNode<MyTest, Student> node = table.getChainArray()[i];
+            while (node != null) {
+                counts[i]++;
+                node = node.getNext();
+            }
+        }
+
+        // 4) Print the bucket distribution
+        System.out.println("Bucket distribution (10 000 entries):");
+        for (int i = 0; i < counts.length; i++) {
+            System.out.printf("Bucket %2d: %4d elements%n", i, counts[i]);
         }
     }
 }
